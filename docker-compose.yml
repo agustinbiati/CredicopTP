@@ -1,0 +1,30 @@
+version: '3'
+services:
+  jenkins:
+    image: jenkins/jenkins:2.385
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - ./init.groovy.d:/var/jenkins_home/init.groovy.d  # Monta el directorio correctamente
+      - ./plugins.txt:/usr/share/jenkins/ref/plugins.txt
+    environment:
+      JENKINS_OPTS: --argumentsRealm.admin.id=admin --argumentsRealm.admin.password=admin123
+
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_conf:/opt/sonarqube/conf
+
+volumes:
+  jenkins_home:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  sonarqube_conf:
